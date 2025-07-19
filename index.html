@@ -652,6 +652,7 @@
                         <button type="button" id="clearFilesBtn" class="btn secondary" style="display: none;">🗑️ Clear Files</button>
                         <button type="button" id="addAllExtractedBtn" class="btn success" style="display: none;">✅ Add All Items</button>
                         <button type="button" id="selectAllExtractedBtn" class="btn" style="display: none;">🎯 Select All Items</button>
+                        <button type="button" id="deselectAllExtractedBtn" class="btn danger" style="display: none;">❌ Deselect All Items</button>
                     </div>
                     <div id="extractedItemsPreview" style="display: none; margin-top: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -865,6 +866,7 @@
                     // Show action buttons
                     document.getElementById('addAllExtractedBtn').style.display = 'inline-block';
                     document.getElementById('selectAllExtractedBtn').style.display = 'inline-block';
+                    document.getElementById('deselectAllExtractedBtn').style.display = 'inline-block';
                     
                 } else {
                     showUploadStatus(`❌ ${data.error}`, 'error');
@@ -986,7 +988,23 @@
             document.getElementById('extractedItemsPreview').style.display = 'none';
             document.getElementById('addAllExtractedBtn').style.display = 'none';
             document.getElementById('selectAllExtractedBtn').style.display = 'none';
+            document.getElementById('deselectAllExtractedBtn').style.display = 'none';
             extractedItems = [];
+        }
+
+        function deselectAllExtracted() {
+            if (extractedItems.length === 0) return;
+            
+            let deselectedCount = 0;
+            extractedItems.forEach(item => {
+                if (currentItems.includes(item)) {
+                    itemStates[item] = false;
+                    deselectedCount++;
+                }
+            });
+            
+            updateItemLists();
+            alert(`Deselected ${deselectedCount} items from the extracted list!`);
         }
 
         // All the existing JavaScript functions
@@ -1603,6 +1621,7 @@
             const uploadBtn = document.getElementById('uploadCatalogBtn');
             const addAllBtn = document.getElementById('addAllExtractedBtn');
             const selectAllBtn = document.getElementById('selectAllExtractedBtn');
+            const deselectAllBtn = document.getElementById('deselectAllExtractedBtn');
             
             // Drag and drop handlers
             uploadArea.addEventListener('dragover', function(e) {
@@ -1694,6 +1713,9 @@
                 updateItemLists();
                 alert(`Selected ${selectedCount} items from the extracted list!`);
             });
+            
+            // Deselect all extracted items (NEW FUNCTIONALITY)
+            deselectAllBtn.addEventListener('click', deselectAllExtracted);
             
             // Add to List button
             document.getElementById('convertBtn').addEventListener('click', function () {
