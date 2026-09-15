@@ -241,6 +241,7 @@ FILTERED_ITEMS = {
     'infested_cracked_stone_bricks',
     'infested_mossy_stone_bricks',
     'infested_stone_bricks',
+    'iron_chain',
     'lab_table',
     'lava_bucket',
     'material_reducer',
